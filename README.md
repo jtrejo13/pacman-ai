@@ -1,4 +1,4 @@
-# The PacMan Projcts
+# The PacMan Projects
 
 ## [Overview](http://ai.berkeley.edu/project_overview.html}
 
