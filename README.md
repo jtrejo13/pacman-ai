@@ -1,12 +1,12 @@
 # The PacMan Projects
 
-## [Overview](http://ai.berkeley.edu/project_overview.html}
+## [Overview](http://ai.berkeley.edu/project_overview.html)
 
 The Pac-Man projects were developed for UC Berkeley's introductory artificial intelligence course, CS 188. They apply an array of AI techniques to playing Pac-Man. These projects, however, don't focus on building AI for video games. Instead, they teach foundational AI concepts, such as informed state-space search, probabilistic inference, and reinforcement learning. These concepts underly real-world application areas such as natural language processing, computer vision, and robotics.
 
 ## Motivation
 
-I will be working on the PacMan projects this semester as I am auditing UT's course on artificial intelligence, (CS 343)[http://www.cs.utexas.edu/users/sniekum/classes/343-S18/desc.php], taught by Dr. (Scott Niekum)[http://www.cs.utexas.edu/users/sniekum/]
+I will be working on the PacMan projects this semester as I am auditing UT's course on artificial intelligence, [CS 343](http://www.cs.utexas.edu/users/sniekum/classes/343-S18/desc.php), taught by [Dr. Scott Niekum] (http://www.cs.utexas.edu/users/sniekum/)
 
 ## Projects Overview
 
