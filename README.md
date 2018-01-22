@@ -6,7 +6,7 @@ The Pac-Man projects were developed for UC Berkeley's introductory artificial in
 
 ## Motivation
 
-I will be working on the PacMan projects this semester as I am auditing UT's course on artificial intelligence, [CS 343](http://www.cs.utexas.edu/users/sniekum/classes/343-S18/desc.php), taught by [Dr. Scott Niekum] (http://www.cs.utexas.edu/users/sniekum/)
+I will be working on the PacMan projects this semester as I am auditing UT's course on artificial intelligence, [CS 343](http://www.cs.utexas.edu/users/sniekum/classes/343-S18/desc.php), taught by [Dr. Scott Niekum](http://www.cs.utexas.edu/users/sniekum/)
 
 ## Projects Overview
 

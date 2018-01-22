@@ -72,6 +72,37 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+
+class Path(object):
+    """Representation of potential search paths"""
+    def __init__(self, nodes, actions=[], path_cost=[]):
+        self.nodes = nodes
+        self.actions = actions
+        self.path_cost = path_cost
+
+    def __str__(self):
+        print '(%s, %s, %s)' % (self.nodes, self.actions, self.path_cost)
+
+def graphSearch(problem, container):
+
+    paths = container()
+    start_path = Path([problem.getStartState()])
+    paths.push(start_path)
+    visited = set()
+
+    while not paths.isEmpty():
+        path = paths.pop()
+        last_node = path.nodes[-1]
+        if problem.isGoalState(last_node):
+            break
+        if last_node not in visited:
+            visited.add(last_node)
+            for neighbor, action, cost in problem.getSuccessors(last_node):
+                new_path = Path(path.nodes + [neighbor], path.actions + [action])
+                paths.push(new_path)
+
+    return path.actions
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -86,30 +117,12 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    paths = util.Stack()
-    directions = util.Stack()
-    paths.push([problem.getStartState()])
-    directions.push([])
-    visited = set()
-
-    while not paths.isEmpty():
-        path = paths.pop()
-        direction = directions.pop()
-        node = path[-1]
-        if problem.isGoalState(node):
-            break
-        visited.add(node)
-        for neighbor, action, _ in problem.getSuccessors(node):
-            if neighbor not in visited:
-                paths.push(path + [neighbor])
-                directions.push(direction + [action])
-
-    return direction
+    return graphSearch(problem, util.Stack)
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return graphSearch(problem, util.Queue)
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
