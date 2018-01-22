@@ -75,17 +75,17 @@ def tinyMazeSearch(problem):
 
 class Path(object):
     """Representation of potential search paths"""
-    def __init__(self, nodes, actions=[], path_cost=[]):
+    def __init__(self, nodes, actions=[], cost=0):
         self.nodes = nodes
         self.actions = actions
-        self.path_cost = path_cost
+        self.cost = cost
 
     def __str__(self):
         print '(%s, %s, %s)' % (self.nodes, self.actions, self.path_cost)
 
 def graphSearch(problem, container):
 
-    paths = container()
+    paths = container
     start_path = Path([problem.getStartState()])
     paths.push(start_path)
     visited = set()
@@ -98,7 +98,8 @@ def graphSearch(problem, container):
         if last_node not in visited:
             visited.add(last_node)
             for neighbor, action, cost in problem.getSuccessors(last_node):
-                new_path = Path(path.nodes + [neighbor], path.actions + [action])
+                new_path = Path(path.nodes + [neighbor], \
+                path.actions + [action], path.cost + cost)
                 paths.push(new_path)
 
     return path.actions
@@ -117,17 +118,16 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    return graphSearch(problem, util.Stack)
+    return graphSearch(problem, util.Stack())
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    return graphSearch(problem, util.Queue)
+    return graphSearch(problem, util.Queue())
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    container = util.PriorityQueueWithFunction(lambda path : path.cost)
+    return graphSearch(problem, container)
 
 def nullHeuristic(state, problem=None):
     """
@@ -138,7 +138,6 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
 
