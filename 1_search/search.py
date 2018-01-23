@@ -82,7 +82,10 @@ class Path(object):
         self.future_cost = future_cost
 
     def __str__(self):
-        print '(%s, %s, %s)' % (self.nodes, self.actions, self.path_cost)
+        return '(%s, %s, %i)' % (self.nodes, self.actions, self.cost)
+
+    def __repr__(self):
+        return self.__str__()
 
 def graphSearch(problem, container, heuristic):
     paths = container

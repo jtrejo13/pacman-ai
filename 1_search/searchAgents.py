@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -294,15 +294,13 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (self.startingPosition, (self.corners))
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return state[0] in self.corners and len(self.corners) == 0
 
     def getSuccessors(self, state):
         """
@@ -318,15 +316,21 @@ class CornersProblem(search.SearchProblem):
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
-            # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
+              location, corners_visited = state
+              x, y = location
+              dx, dy = Actions.directionToVector(action)
+              nextx, nexty = int(x + dx), int(y + dy)
+              hitsWall = self.walls[nextx][nexty]
+              if not hitsWall:
+                  next_location = (nextx, nexty)
+                  if location in self.corners:
+                      corners_visited = [c for c in corners_visited if c != location]
+                  cost = 0
+                  successors.append(((next_location, tuple(corners_visited)), action, cost))
 
-            "*** YOUR CODE HERE ***"
-
+        # Bookkeeping for display purposes
         self._expanded += 1 # DO NOT CHANGE
+
         return successors
 
     def getCostOfActions(self, actions):
