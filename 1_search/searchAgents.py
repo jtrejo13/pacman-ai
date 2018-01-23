@@ -287,20 +287,19 @@ class CornersProblem(search.SearchProblem):
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
         # Please add any code here which you would like to use
         # in initializing the problem
-        "*** YOUR CODE HERE ***"
 
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        return (self.startingPosition, (self.corners))
+        return (self.startingPosition, ())
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        return state[0] in self.corners and len(self.corners) == 0
+        return len(state[-1]) == 4
 
     def getSuccessors(self, state):
         """
@@ -323,8 +322,9 @@ class CornersProblem(search.SearchProblem):
               hitsWall = self.walls[nextx][nexty]
               if not hitsWall:
                   next_location = (nextx, nexty)
-                  if location in self.corners:
-                      corners_visited = [c for c in corners_visited if c != location]
+                  if next_location in self.corners \
+                  and next_location not in corners_visited:
+                      corners_visited = list(corners_visited) + [next_location]
                   cost = 0
                   successors.append(((next_location, tuple(corners_visited)), action, cost))
 
@@ -364,7 +364,7 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    return 0  # trivial
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
