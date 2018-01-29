@@ -287,6 +287,8 @@ class CornersProblem(search.SearchProblem):
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
         # Please add any code here which you would like to use
         # in initializing the problem
+        self.avg_side_dist = ((top - 1) + (right - 1)) / 2
+
 
     def getStartState(self):
         """
@@ -346,6 +348,11 @@ class CornersProblem(search.SearchProblem):
             if self.walls[x][y]: return 999999
         return len(actions)
 
+def manhattanDistance(position, position_2):
+    "The Manhattan distance between two locations"
+    xy1 = position
+    xy2 = position_2
+    return abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
 
 def cornersHeuristic(state, problem):
     """
@@ -359,11 +366,26 @@ def cornersHeuristic(state, problem):
     This function should always return a number that is a lower bound on the
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
-    """
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    return len(problem.corners) - len(state[-1])  # number of corners left
+    Heuristic:
+    1) Calculate the average manhattan distance between corners (avg length of
+    the sides of the Pac-Man maze)
+    2) Find the manhattan distance to the closest corner
+    3) Add the two numbers taking into account number of corners left
+    """
+    corners_visited = state[-1]
+    corners = problem.corners
+    if len(corners_visited) == len(corners): # if no more corners to go
+        return 0
+
+    to_go = [c for c in corners if c not in corners_visited] # Corners left
+    min_dist = float('inf')
+    for corner in to_go:
+        dist = manhattanDistance(state[0], corner)
+        if dist < min_dist:
+            min_dist = dist
+
+    return min_dist + (len(to_go) - 1) * problem.avg_side_dist
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
