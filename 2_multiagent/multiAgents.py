@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -69,12 +69,24 @@ class ReflexAgent(Agent):
         # Useful information you can extract from a GameState (pacman.py)
         successorGameState = currentGameState.generatePacmanSuccessor(action)
         newPos = successorGameState.getPacmanPosition()
+        ghostPositions = successorGameState.getGhostPositions()
         newFood = successorGameState.getFood()
-        newGhostStates = successorGameState.getGhostStates()
-        newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
-        "*** YOUR CODE HERE ***"
-        return successorGameState.getScore()
+        ghost_distances = [manhattanDistance(newPos, ghostPos) \
+                           for ghostPos in ghostPositions]
+
+        food_distances = [manhattanDistance(newPos, (x, y)) \
+                          for x in range(newFood.width) \
+                          for y in range(newFood.height)
+                          if newFood[x][y] == True and newPos != (x, y)]
+
+        food_count = newFood.count(True)
+
+        max_score = 10
+
+        print(action, food_score)
+
+        return food_score
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -170,4 +182,3 @@ def betterEvaluationFunction(currentGameState):
 
 # Abbreviation
 better = betterEvaluationFunction
-
