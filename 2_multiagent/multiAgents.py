@@ -70,23 +70,21 @@ class ReflexAgent(Agent):
         successorGameState = currentGameState.generatePacmanSuccessor(action)
         newPos = successorGameState.getPacmanPosition()
         ghostPositions = successorGameState.getGhostPositions()
-        newFood = successorGameState.getFood()
+        food = currentGameState.getFood()
 
-        ghost_distances = [manhattanDistance(newPos, ghostPos) \
-                           for ghostPos in ghostPositions]
+        ghost_dist = [manhattanDistance(newPos, ghostPos) \
+                      for ghostPos in ghostPositions]
 
-        food_distances = [manhattanDistance(newPos, (x, y)) \
-                          for x in range(newFood.width) \
-                          for y in range(newFood.height)
-                          if newFood[x][y] == True and newPos != (x, y)]
+        food_dist = [manhattanDistance(newPos, (x, y)) \
+                     for x in range(food.width) \
+                     for y in range(food.height)
+                     if food[x][y] == True]
 
-        food_count = newFood.count(True)
+        food_dist_ratio   = min(food_dist) / float(max(food_dist) - min(food_dist) + 1)
+        food_dist_score   = 1 / (food_dist_ratio + 1)
+        ghost_dist_score  = min(ghost_dist) / float(min(food_dist) + 1)
 
-        max_score = 10
-
-        print(action, food_score)
-
-        return food_score
+        return food_dist_score + ghost_dist_score
 
 def scoreEvaluationFunction(currentGameState):
     """
