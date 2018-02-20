@@ -137,52 +137,49 @@ class MinimaxAgent(MultiAgentSearchAgent):
           gameState.getNumAgents():
             Returns the total number of agents in the game
         """
-        agents = cycle(range(gameState.getNumAgents()))
-        depth = 1
+        depth = 0
 
         # Collect legal moves and successor states
         legalMoves = gameState.getLegalActions()
 
-        # Get Utilities for possible legal moves
-        next(agents)
+        # Get minmax utilities for possible legal moves
         scores = []
         for action in legalMoves:
             nextState = gameState.generateSuccessor(0, action)
-            scores.append(self.getValue(nextState, agents, depth))
+            scores.append(self.getValue(nextState, 1, depth))
 
         print(scores)
         print(legalMoves)
 
-        # return legalMoves[scores.index(max(scores))]
+        return legalMoves[scores.index(max(scores))]
 
-        return legalMoves[1]
-
-    def getValue(self, gameState, agents, depth):
-        # print(depth)
-        if self.isTerminalState(gameState, depth):
+    def getValue(self, gameState, agentIndex, depth):
+        legalActions = gameState.getLegalActions(agentIndex % gameState.getNumAgents())
+        if len(legalActions) == 0 or depth == self.depth * gameState.getNumAgents() - 1:
             return self.evaluationFunction(gameState)
-        nextAgent = next(agents) # TODO
-        if nextAgent == 0:
-            self.max_value(gameState, nextAgent, agents, depth)
-        else:
-            self.min_value(gameState, nextAgent, agents, depth)
 
-    def max_value(self, gameState, agentIndex, agents, depth):
+        # for actions in legalActions:
+        if agentIndex % gameState.getNumAgents() == 0:
+            return self.max_value(gameState, agentIndex, depth)
+        else:
+            return self.min_value(gameState, agentIndex, depth)
+
+    def max_value(self, gameState, agentIndex, depth):
         v = float('-inf')
+        successors = self.getSuccessorStates(gameState, agentIndex % gameState.getNumAgents())
         depth += 1
-        successors = self.getSuccessorStates(gameState, agentIndex)
         for successor in successors:
-            v = max(v, self.getValue(successor, agents, depth))
-        print(v)
+            v = max(v, self.getValue(successor, agentIndex + 1, depth))
+        # print(agentIndex % gameState.getNumAgents(), v, depth)
         return v
 
-    def min_value(self, gameState, agentIndex, agents, depth):
+    def min_value(self, gameState, agentIndex, depth):
         v = float('inf')
+        successors = self.getSuccessorStates(gameState, agentIndex % gameState.getNumAgents())
         depth += 1
-        successors = self.getSuccessorStates(gameState, agentIndex)
         for successor in successors:
-            v = min(v, self.getValue(successor, agents, depth))
-        print(v)
+            v = min(v, self.getValue(successor, agentIndex + 1, depth))
+        # print(agentIndex % gameState.getNumAgents(), v, depth)
         return v
 
     def getSuccessorStates(self, gameState, agentIndex):
@@ -192,9 +189,16 @@ class MinimaxAgent(MultiAgentSearchAgent):
             successorStates.append(gameState.generateSuccessor(agentIndex, action))
         return successorStates
 
-    def isTerminalState(self, gameState, depth):
-        return len(gameState.getLegalActions()) == 0 \
-               or depth == self.depth * gameState.getNumAgents()
+    # def getSuccessorStates(self, gameState, agentIndex, legalActions):
+    #     legalActions = gameState.getLegalActions(agentIndex)
+    #     successorStates = []
+    #     for action in legalActions:
+    #         successorStates.append(gameState.generateSuccessor(agentIndex, action))
+    #     return successorStates
+
+    # def isTerminalState(self, gameState, depth):
+    #     return len(gameState.getLegalActions()) == 0 \
+    #            or depth == self.depth * gameState.getNumAgents()
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
