@@ -312,8 +312,24 @@ def betterEvaluationFunction(currentGameState):
 
       DESCRIPTION: <write something here so we know what you did>
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # Useful information you can extract from a GameState (pacman.py)
+    newPos = currentGameState.getPacmanPosition()
+    ghostPositions = currentGameState.getGhostPositions()
+    food = currentGameState.getFood()
+
+    ghost_dist = [manhattanDistance(newPos, ghostPos) \
+                  for ghostPos in ghostPositions]
+
+    food_dist = [manhattanDistance(newPos, (x, y)) \
+                 for x in range(food.width) \
+                 for y in range(food.height)
+                 if food[x][y] == True]
+
+    food_dist_ratio   = min(food_dist) / float(max(food_dist) - min(food_dist) + 1)
+    food_dist_score   = 1 / (food_dist_ratio + 1)
+    ghost_dist_score  = min(ghost_dist) / float(min(food_dist) + 1)
+
+    return food_dist_score + ghost_dist_score
 
 # Abbreviation
 better = betterEvaluationFunction
